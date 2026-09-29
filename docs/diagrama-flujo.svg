@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 915 315" width="915" height="315" role="img" aria-label="Diagrama de flujo de Territory_Mapping">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#9A958C"/>
+    </marker>
+    <style>
+      .t  { font-family: "Segoe UI", system-ui, sans-serif; font-size: 13px; font-weight: 600; fill: #2B2B2B; }
+      .s  { font-family: "Segoe UI", system-ui, sans-serif; font-size: 11px; fill: #6B6B6B; }
+      .f  { font-family: "Segoe UI", system-ui, sans-serif; font-size: 11px; fill: #8A857C; font-style: italic; }
+      .bx { fill: #F7F5F2; stroke: #D8D2C8; stroke-width: 1.5; }
+      .ac { fill: #FDECEA; stroke: #E94235; stroke-width: 1.5; }
+      .ar { stroke: #9A958C; stroke-width: 1.6; fill: none; marker-end: url(#a); }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="915" height="315" fill="#FFFFFF"/>
+
+  <!-- fila 1 -->
+  <rect class="ac" x="20"  y="40" width="185" height="66" rx="8"/>
+  <text class="t" x="112" y="68"  text-anchor="middle">coords.json</text>
+  <text class="s" x="112" y="87"  text-anchor="middle">lista de { lat, lng }</text>
+
+  <rect class="bx" x="250" y="40" width="185" height="66" rx="8"/>
+  <text class="t" x="342" y="68"  text-anchor="middle">Validar</text>
+  <text class="s" x="342" y="87"  text-anchor="middle">3+ puntos, rangos, cierre</text>
+
+  <rect class="bx" x="480" y="40" width="185" height="66" rx="8"/>
+  <text class="t" x="572" y="68"  text-anchor="middle">Encuadrar</text>
+  <text class="s" x="572" y="87"  text-anchor="middle">bounding box + zoom</text>
+
+  <rect class="bx" x="710" y="40" width="185" height="66" rx="8"/>
+  <text class="t" x="802" y="68"  text-anchor="middle">Teselas OSM</text>
+  <text class="s" x="802" y="87"  text-anchor="middle">descarga + cache</text>
+
+  <path class="ar" d="M 205 73 L 244 73"/>
+  <path class="ar" d="M 435 73 L 474 73"/>
+  <path class="ar" d="M 665 73 L 704 73"/>
+
+  <!-- enlace entre filas -->
+  <path class="ar" d="M 802 106 L 802 140 L 112 140 L 112 184"/>
+
+  <!-- fila 2 -->
+  <rect class="bx" x="20"  y="190" width="185" height="66" rx="8"/>
+  <text class="t" x="112" y="218" text-anchor="middle">Componer lienzo</text>
+  <text class="s" x="112" y="237" text-anchor="middle">unir las teselas</text>
+
+  <rect class="bx" x="250" y="190" width="185" height="66" rx="8"/>
+  <text class="t" x="342" y="218" text-anchor="middle">Pintar el area</text>
+  <text class="s" x="342" y="237" text-anchor="middle">relleno 8% + contorno</text>
+
+  <rect class="bx" x="480" y="190" width="185" height="66" rx="8"/>
+  <text class="t" x="572" y="218" text-anchor="middle">Marcar vertices</text>
+  <text class="s" x="572" y="237" text-anchor="middle">un pin por punto</text>
+
+  <rect class="ac" x="710" y="190" width="185" height="66" rx="8"/>
+  <text class="t" x="802" y="218" text-anchor="middle">territorio_area.png</text>
+  <text class="s" x="802" y="237" text-anchor="middle">+ creditos, ha, perimetro</text>
+
+  <path class="ar" d="M 205 223 L 244 223"/>
+  <path class="ar" d="M 435 223 L 474 223"/>
+  <path class="ar" d="M 665 223 L 704 223"/>
+
+  <text class="f" x="20" y="288">Las teselas se guardan en %LOCALAPPDATA%\Territory_Mapping\tiles: la segunda corrida sobre la misma zona no vuelve a descargar nada.</text>
+</svg>

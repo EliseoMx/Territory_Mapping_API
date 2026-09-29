@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# Entorno / secretos
+.env
+*.key
+config.local.json
+
+# Salidas generadas
+output/
+salida/
+salidas/
+*.log
+
+# Meta del PR, no va al repo
+docs/PR_BODY.md
+
+# Descargas del chat
+Claude outputs/
+
+# Editores / SO
+.vscode/
+.idea/
+Thumbs.db
+desktop.ini
