@@ -187,13 +187,45 @@ pega las coordenadas y **Send**. Postman muestra la imagen en la respuesta.
 
 ---
 
+## Configuracion: puerto y host
+
+Se cambian en **`config.ini`**, en la raiz del proyecto:
+
+```ini
+[servidor]
+puerto = 8000
+host = 127.0.0.1
+```
+
+Guarda el archivo y vuelve a abrir `iniciar.bat`. `probar.bat` lee el mismo
+puerto, asi que no hay que tocar nada mas. Al arrancar, la API muestra que
+archivo leyo:
+
+```
+  config         D:\GitHub\Territory_Mapping_API\config.ini
+  escuchando en  http://127.0.0.1:8000
+```
+
+Si hay varias fuentes, gana la primera de esta lista:
+
+1. Parametro al arrancar: `iniciar.bat --port 9000`
+2. Variable de entorno: `PORT` / `HOST`
+3. `config.ini`
+4. Default: `8000` y `127.0.0.1`
+
+Con el `.exe`, `config.ini` va **junto al ejecutable**. `build.bat` deja una
+copia en `dist\` (si ya habia una, la respeta). Si no lo encuentra, arranca
+con los valores por defecto.
+
+---
+
 ## Usarla desde otra computadora
 
 Por default solo escucha en tu equipo (`127.0.0.1`). Para abrirla a tu red
-local:
+local, en `config.ini` pon:
 
-```bat
-iniciar.bat --host 0.0.0.0 --port 8000
+```ini
+host = 0.0.0.0
 ```
 
 Desde otra maquina usa la IP de la tuya (`ipconfig` te la dice), por ejemplo
@@ -233,6 +265,7 @@ Territory_Mapping_API/
 ├── samples/                    los mismos JSON de ejemplo
 │   └── formas/                 los cinco casos de ordenamiento
 ├── docs/                       formato, arquitectura, diagrama
+├── config.ini                  puerto y host
 ├── iniciar.bat                 instala lo necesario y levanta la API
 ├── probar.bat                  manda el ejemplo y abre la imagen
 ├── build.bat                   genera dist\Territory_Mapping_API.exe
@@ -250,7 +283,8 @@ aqui para que la API lo tome.
 |---|---|
 | `iniciar.bat` dice que no encuentra Python | No marcaste "Add python.exe to PATH". Reinstala Python marcando la casilla |
 | `probar.bat` dice que la API no responde | Abre `iniciar.bat` primero y deja la ventana abierta |
-| `[Errno 10048]` al iniciar | El puerto 8000 ya esta ocupado. Usa `iniciar.bat --port 8001` |
+| `[Errno 10048]` al iniciar | El puerto ya esta ocupado. Cambia `puerto` en `config.ini`, por ejemplo a `8001` |
+| `ERROR: en config.ini, 'puerto'...` | El puerto no es un numero entre 1 y 65535. Revisa `config.ini` |
 | El mapa sale gris sin calles | No hubo conexion al bajar las teselas. Revisa internet y vuelve a pedirla |
 | La primera solicitud tarda varios segundos | Esta bajando las teselas de esa zona. Las siguientes salen del cache |
 | `422` con `lat fuera de rango` | Invertiste `lat` y `lng`. En Mexico la latitud ronda 20 y la longitud -103 |

@@ -58,6 +58,8 @@ if errorlevel 1 (
     exit /b 1
 )
 
+if not exist "dist\config.ini" copy /y "config.ini" "dist\config.ini" >nul
+
 echo [4/4] Probando el ejecutable...
 "dist\Territory_Mapping_API.exe" --version
 if errorlevel 1 (
