@@ -220,19 +220,60 @@ def area(
 # Arranque
 # --------------------------------------------------------------------------
 
+def carpeta_proyecto():
+    """Donde se busca config.ini.
+
+    Compilado (.exe): junto al ejecutable. Desde el codigo: la raiz del
+    proyecto, un nivel arriba de src/.
+    """
+    if getattr(sys, "frozen", False):
+        return os.path.dirname(os.path.abspath(sys.executable))
+    return os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def leer_config():
+    """Lee [servidor] de config.ini. Si no existe o esta incompleto, usa defaults."""
+    import configparser
+
+    ruta = os.path.join(carpeta_proyecto(), "config.ini")
+    cfg = {"host": "127.0.0.1", "puerto": 8000, "ruta": None}
+    if not os.path.isfile(ruta):
+        return cfg
+    parser = configparser.ConfigParser(inline_comment_prefixes=(";", "#"))
+    try:
+        parser.read(ruta, encoding="utf-8-sig")
+    except configparser.Error as exc:
+        raise SystemExit("ERROR: config.ini no es valido (%s)" % exc)
+    sec = parser["servidor"] if parser.has_section("servidor") else {}
+    cfg["host"] = (sec.get("host") or cfg["host"]).strip()
+    valor = (sec.get("puerto") or str(cfg["puerto"])).strip()
+    if not valor.isdigit() or not 1 <= int(valor) <= 65535:
+        raise SystemExit("ERROR: en config.ini, 'puerto' debe ser un numero "
+                         "entre 1 y 65535 (llego: %s)" % valor)
+    cfg["puerto"] = int(valor)
+    cfg["ruta"] = ruta
+    return cfg
+
+
 def main(argv=None):
     import uvicorn
 
+    # Prioridad: parametro --port > variable de entorno PORT > config.ini > 8000
+    cfg = leer_config()
+    host = os.environ.get("HOST") or cfg["host"]
+    puerto = int(os.environ.get("PORT") or cfg["puerto"])
+
     parser = argparse.ArgumentParser(prog="Territory_Mapping_API")
-    parser.add_argument("--host", default=os.environ.get("HOST", "127.0.0.1"),
-                        help="interfaz (default 127.0.0.1; usa 0.0.0.0 para la red local)")
-    parser.add_argument("--port", type=int, default=int(os.environ.get("PORT", 8000)),
-                        help="puerto (default 8000)")
+    parser.add_argument("--host", default=host,
+                        help="interfaz (default: config.ini; 0.0.0.0 abre a la red local)")
+    parser.add_argument("--port", type=int, default=puerto,
+                        help="puerto (default: config.ini, o 8000)")
     parser.add_argument("--version", action="version",
                         version="Territory_Mapping_API " + API_VERSION)
     args = parser.parse_args(argv)
 
     print("Territory_Mapping_API %s" % API_VERSION)
+    print("  config         %s" % (cfg["ruta"] or "(sin config.ini, valores por defecto)"))
     print("  escuchando en  http://%s:%d" % (args.host, args.port))
     print("  documentacion  http://%s:%d/docs" % (args.host, args.port))
     print("  Ctrl+C para detener\n")

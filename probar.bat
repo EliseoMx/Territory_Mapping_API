@@ -2,7 +2,12 @@
 setlocal
 cd /d "%~dp0"
 
-set "URL=http://127.0.0.1:8000"
+set "PUERTO=8000"
+if exist "config.ini" (
+    for /f "tokens=1,* delims==" %%a in ('findstr /r /i /c:"^ *puerto *=" "config.ini"') do set "PUERTO=%%b"
+)
+set "PUERTO=%PUERTO: =%"
+set "URL=http://127.0.0.1:%PUERTO%"
 
 curl.exe -s -f "%URL%/salud" >nul 2>&1
 if errorlevel 1 (
